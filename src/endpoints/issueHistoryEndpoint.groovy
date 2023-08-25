@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response
 @BaseScript CustomEndpointDelegate delegate
 
 issueHistory(httpMethod: "GET", groups: ["jira-software"]) { MultivaluedMap queryParams, String body, HttpServletRequest request ->
+
     IssueHistory issueHistory = new IssueHistory()
 
     try {
