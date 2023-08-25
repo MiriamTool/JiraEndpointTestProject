@@ -18,9 +18,6 @@ class IssueHistory {
 
     final static String allowedUsername = 'test'
 
-    IssueHistory() {
-    }
-
     String getHistory(MultivaluedMap queryParams, HttpServletRequest request) {
 
         if (!validateUser(request)) {
