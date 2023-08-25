@@ -55,11 +55,13 @@ class IssueHistory {
         for (changes in changeHistoryList) {
 
             for (ChangeItemBean item in changes.changeItemBeans) {
-                DataHistory historyCurrent = new DataHistory(from: item.from,
+                DataHistory historyCurrent = new DataHistory(
+                        from: item.from,
                         to: item.to,
                         date: item.created.dateString,
                         field: item.field,
-                        author: changes.authorObject.username)
+                        author: changes.authorObject.username
+                )
                 changesList.add(historyCurrent)
             }
 
