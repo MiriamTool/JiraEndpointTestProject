@@ -1,7 +1,7 @@
 package endpoints
 
-import com.adaptavist.hapi.jira.issues.exceptions.IssueRetrievalException
 import com.atlassian.jira.issue.changehistory.ChangeHistory
+import com.adaptavist.hapi.jira.issues.exceptions.IssueRetrievalException
 import com.atlassian.jira.component.ComponentAccessor
 import com.atlassian.jira.issue.Issue
 import com.atlassian.jira.issue.changehistory.ChangeHistoryManager
@@ -42,7 +42,6 @@ class IssueHistory {
 
         ChangeHistoryManager changeHistoryManager = ComponentAccessor.getChangeHistoryManager()
 
-        List<DataHistory> changesList = []
         List<ChangeHistory> changeHistoryList
 
         if (date) {
@@ -51,11 +50,12 @@ class IssueHistory {
             changeHistoryList = changeHistoryManager.getChangeHistories(issue)
         }
 
+        List<DataHistory> changesList = []
+
         for (changes in changeHistoryList) {
 
             for (ChangeItemBean item in changes.changeItemBeans) {
-                DataHistory historyCurrent = new DataHistory(
-                        from: item.from,
+                DataHistory historyCurrent = new DataHistory(from: item.from,
                         to: item.to,
                         date: item.created.dateString,
                         field: item.field,
