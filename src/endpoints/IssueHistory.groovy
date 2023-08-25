@@ -1,6 +1,7 @@
 package endpoints
 
 import com.adaptavist.hapi.jira.issues.exceptions.IssueRetrievalException
+import com.atlassian.jira.issue.changehistory.ChangeHistory
 import com.atlassian.jira.component.ComponentAccessor
 import com.atlassian.jira.issue.Issue
 import com.atlassian.jira.issue.changehistory.ChangeHistoryManager
@@ -42,8 +43,15 @@ class IssueHistory {
         ChangeHistoryManager changeHistoryManager = ComponentAccessor.getChangeHistoryManager()
 
         List<DataHistory> changesList = []
+        List<ChangeHistory> changeHistoryList
 
-        for (changes in changeHistoryManager.getChangeHistoriesSince(issue, LocalDate.parse(date).toDate())) {
+        if (date) {
+            changeHistoryList = changeHistoryManager.getChangeHistoriesSince(issue, LocalDate.parse(date).toDate())
+        } else {
+            changeHistoryList = changeHistoryManager.getChangeHistories(issue)
+        }
+
+        for (changes in changeHistoryList) {
 
             for (ChangeItemBean item in changes.changeItemBeans) {
                 DataHistory historyCurrent = new DataHistory(
@@ -71,13 +79,12 @@ class IssueHistory {
         if (!issueKey) {
             errorList.add("No issueKey provided")
         }
-        if (!date) {
-            errorList.add("No date assigned")
-        }
-        try {
-            LocalDate.parse(date)
-        } catch (Exception e) {
-            errorList.add("Date can not be parsed. Check format of your input")
+        if (date) {
+            try {
+                LocalDate.parse(date)
+            } catch (Exception e) {
+                errorList.add("Date can not be parsed. Check format of your input")
+            }
         }
         return errorList
     }
